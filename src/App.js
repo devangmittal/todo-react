@@ -1,25 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Card from "./Card";
+import { useEffect, useState } from "react";
 
-function App() {
+const App = () =>
+{
+  let [str, setStr] = useState();
+  let [tasks, setTasks] = useState([]);
+
+
+  const handleStr = (e) =>
+  {
+    setStr(e.target.value.toLowerCase());
+  }
+
+  const handleAdd = () =>
+  {
+    setTasks([...tasks, str]);
+    setStr("");
+  }
+
+  const handleDelete = (del) =>
+  {
+    setTasks(tasks.filter((task) => task !== del));
+  }
+
+  const handleEdit = (original, updated) =>
+  {
+    const temp = tasks.map((task) =>
+    {
+      if (task === original) {
+        task = updated;
+        console.log(task + "task");
+        return task;
+      } else {
+        return task;
+      }
+    })
+    setTasks(temp);
+    console.log(original + " original");
+    console.log(updated + " updated");
+    console.log(tasks + " tasks")
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="background">
+      <div className="center">
+        <input type="text" placeholder="Enter Task" value={str} onChange={handleStr} className="input" />
+        <button onClick={handleAdd} className="button"> Add </button>
+
+        <div className="container">
+          {
+            tasks.map((temp) => <Card text={temp} handleDelete={handleDelete} handleEdit={handleEdit} />)
+          }
+        </div>
+
+      </div>
+
     </div>
   );
 }
-
 export default App;
